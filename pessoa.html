@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app="pessoaModule">
+<head>
+	<meta charset="utf-8"/>
+	<title>Pessoa</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<script src="js/angular.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.14.1.min.js"></script>
+	<script src="control/pessoaControl.js"></script>
+</head>
+<body ng-controller="pessoaControl">
+	<div ng-include="'menu.html'"></div>
+	<div class="panel panel-default">
+
+
+
+		<div class="panel-heading">Cadastro de Pessoa</div>
+		<div class="panel-body">
+			<div>
+			  <!-- Nav tabs -->
+			  <ul class="nav nav-tabs" role="tablist">
+			    <li role="presentation" class="active">
+			    	<a href="#cadastro" aria-controls="cadastro" role="tab" data-toggle="tab">Cadastro</a>
+			    </li>
+			    <li role="presentation">
+			    	<a href="#dados" aria-controls="dados" role="tab" data-toggle="tab">Dados</a>
+			    </li>
+			  </ul>
+			  <!-- Tab panes -->
+			  <div class="tab-content">
+			    <div role="tabpanel" class="tab-pane active" id="cadastro">
+			    	<form name="pessoaForm" class="css-form" ng-submit="pessoaForm.$valid && salvar()" novalidate>
+				    	<br>
+						<span ng-repeat="mensagem in mensagens">{{mensagem}}<br></span>
+						<div ng-show="pessoaForm.$submitted">
+						     <div ng-show="pessoaForm.nome.$error.required">Preencha o nome</div>
+	      				     <div ng-show="pessoaForm.nome.$error.minlength">Nome precisa ter pelo menos 10 caracteres</div>
+										 <div ng-show="pessoaForm.cpf.$error">Digite um CPF válido</div>
+	    				</div>
+						<br>
+						<button type="button" class="btn btn-info" ng-click="novo()">Novo</button>
+						<button type="submit" class="btn btn-success">Salvar</button>
+						<button type="button" class="btn btn-danger" ng-click="excluir()">Excluir</button>
+						<button type="button" class="btn btn-warning" ng-click="pesquisarPorNome()">Pesquisar</button>
+						<hr/>
+					  <div class="form-group col-md-2">
+					    <label for="exampleInputCodigo">Codigo</label>
+					    <input type="number" disabled="true" class="form-control" ng-model="pessoa.id" placeholder="Codigo">
+					  </div>
+						<div class="form-group col-md-2">
+					    <label for="exampleInputNome">CPF</label>
+					    <input type="text" class="form-control" ng-model="pessoa.cpf" name="cpf" placeholder="Insira o CPF" required="" ng-minlength="11"  ng-maxlength="11" />
+					  </div>
+					  <div class="form-group col-md-6">
+					    <label for="exampleInputNome">Nome</label>
+					    <input type="text" class="form-control" ng-model="pessoa.nome" name="nome" placeholder="Insira o Nome" required="" ng-minlength="10" />
+					  </div>
+
+				</div>
+			    <div role="tabpanel" class="tab-pane" id="dados">
+				<br>
+				<input type="text" class="form-control" ng-model="criterio"
+				placeholder="O que voce esta procurando?" /><br>
+			    	<table class="table table-hover">
+			    		<th>Codigo</th><th>CPF</th><th>Nome</th>
+
+			    		<tr ng-repeat="pessoaTabela in pessoas | filter:criterio" ng-click="seleciona(pessoaTabela);">
+			    			<td>{{pessoaTabela.id}}</td>
+								<td>{{pessoaTabela.cpf}}</td>
+								<td>{{pessoaTabela.nome}} </td>
+								<td>
+										<a href="#cadastro" aria-controls="cadastro" role="tab" data-toggle="tab" ng-click="seleciona(pessoaTabela)">Editar</a>
+									<a href="#" ng-click="excluirId(pessoaTabela.id)">Excluir</a></td>
+			    		</tr>
+					</table>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
